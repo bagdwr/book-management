@@ -8,6 +8,7 @@ import kz.net.book_management.model.enums.GenreEnum;
 import kz.net.book_management.repository.BookRepository;
 import kz.net.book_management.service.AuthorService;
 import kz.net.book_management.service.BookService;
+import kz.net.book_management.service.kafka.impl.ProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private AuthorService authorService;
+
+    @Autowired
+    private ProducerService producerService;
 
     @Override
     public List<BookDto> getBooksByAuthor(UUID id) {
@@ -64,6 +68,8 @@ public class BookServiceImpl implements BookService {
 
         log.info("H75Otvu4KD :: book with id {} deleted", id);
 
+        producerService.auditHistory(String.format("Book with id %s deleted", id));
+
     }
 
     @Override
@@ -80,6 +86,7 @@ public class BookServiceImpl implements BookService {
                     bookDto.title = book.getTitle();
                     bookDto.totalCopies = book.getTotalCopies();
                     bookDto.releaseYear = book.getReleaseYear();
+                    bookDto.genre = book.getGenre();
                     bookDto.author = book.getAuthor().getFullName();
 
                     return bookDto;
@@ -92,7 +99,7 @@ public class BookServiceImpl implements BookService {
 
         Book book = new Book();
 
-        if (bookDto.id != null) {
+        if (bookDto.id != null && !bookDto.id.isBlank()) {
 
             book = bookRepository.findById(UUID.fromString(bookDto.id))
                     .orElseThrow(() -> new RuntimeException("Book with id " + bookDto.id + " not found"));
@@ -116,7 +123,11 @@ public class BookServiceImpl implements BookService {
 
         log.info("Oc6qQWYhUo :: going to save book : {}", book);
 
-        return bookRepository.save(book);
+        Book b = bookRepository.save(book);
+
+        producerService.auditHistory(String.format("Book with id %s was saved, book: %s", bookDto.id, book));
+
+        return b;
 
     }
 

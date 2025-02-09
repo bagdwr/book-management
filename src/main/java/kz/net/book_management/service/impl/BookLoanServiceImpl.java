@@ -6,6 +6,7 @@ import kz.net.book_management.model.entity.BookLoan;
 import kz.net.book_management.model.entity.LibraryMember;
 import kz.net.book_management.repository.BookLoanRepository;
 import kz.net.book_management.service.BookLoanService;
+import kz.net.book_management.service.kafka.impl.ProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class BookLoanServiceImpl implements BookLoanService {
     @Autowired
     private BookLoanRepository bookLoanRepository;
 
+    @Autowired
+    private ProducerService producerService;
+
     @Override
     public BookLoan createBookLoanRecord(Book book, LibraryMember libraryMember) {
 
@@ -37,6 +41,8 @@ public class BookLoanServiceImpl implements BookLoanService {
 
         log.info("0u1XgD9 :: created a new loan: {}", loan);
 
+        producerService.auditHistory(String.format("New load with id %s was created", loan.getId()));
+
         return loan;
     }
 
@@ -51,7 +57,12 @@ public class BookLoanServiceImpl implements BookLoanService {
 
         bookLoan.setReturnDate(returnDate);
 
-        return bookLoanRepository.save(bookLoan);
+        BookLoan loan = bookLoanRepository.save(bookLoan);
+
+        producerService.auditHistory(String.format("Book loan with id %s was updated, loan: %s", loanId, loan));
+
+        return loan;
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import kz.net.book_management.model.entity.Author;
 import kz.net.book_management.repository.AuthorRepository;
 import kz.net.book_management.service.AuthorService;
 import kz.net.book_management.service.BookService;
+import kz.net.book_management.service.kafka.impl.ProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private ProducerService producerService;
 
     @Override
     public List<AuthorDto> getAll() {
@@ -58,7 +62,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         Author authorEntity = new Author();
 
-        if (author.id == null) {
+        if (author.id == null || author.id.isBlank()) {
 
             authorEntity.setEmail(author.email);
 
@@ -78,7 +82,11 @@ public class AuthorServiceImpl implements AuthorService {
 
         log.info("qsRQnBAf :: going to save author : {}", authorEntity);
 
-        return authorRepository.save(authorEntity);
+        Author a = authorRepository.save(authorEntity);
+
+        producerService.auditHistory(String.format("Author with id : %s saved, fullname: %s", authorEntity.getId(), author.fullName));
+
+        return a;
 
     }
 
@@ -95,6 +103,8 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.delete(author);
 
         log.info("ZehQeHEwU6 :: author with id {} deleted", id);
+
+        producerService.auditHistory(String.format("author with id %s deleted", id));
 
     }
 

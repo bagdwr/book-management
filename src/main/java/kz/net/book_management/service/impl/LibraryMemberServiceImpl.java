@@ -10,6 +10,7 @@ import kz.net.book_management.repository.LibraryMemberRepository;
 import kz.net.book_management.service.BookLoanService;
 import kz.net.book_management.service.BookService;
 import kz.net.book_management.service.LibraryMemberService;
+import kz.net.book_management.service.kafka.impl.ProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class LibraryMemberServiceImpl implements LibraryMemberService {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private ProducerService producerService;
 
     @Override
     public List<MemberDto> getAll() {
@@ -74,7 +78,11 @@ public class LibraryMemberServiceImpl implements LibraryMemberService {
 
         log.info("6oXLYLu :: going to save libraryMember : {}", libraryMember);
 
-        return libraryMemberRepository.save(libraryMember);
+        LibraryMember m = libraryMemberRepository.save(libraryMember);
+
+        producerService.auditHistory(String.format("5mG6kl8 :: member with id %s was saved, member: %s ", libraryMember.getId(), libraryMember));
+
+        return m;
 
     }
 
@@ -91,6 +99,8 @@ public class LibraryMemberServiceImpl implements LibraryMemberService {
         libraryMemberRepository.delete(libraryMember);
 
         log.info("U2LBJjPJH :: member with id {} was deleted", id);
+
+        producerService.auditHistory(String.format("Deleted library member with id %s", id));
 
     }
 

@@ -39,15 +39,15 @@ spring:
 kafka:
   bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
   producer:
-    audited-events:
-      name: audited-events
-      partitions: ${AUDITED_EVENTS_PARTITIONS:48}
+    audit-history:
+      name: audit-history
+      partitions: ${AUDIT_HISTORY_PARTITIONS:6}
       replication-factor: ${REPLICATION_FACTOR:1}
   consumer:
     enable-auto-commit: true
-    audited-events:
-      id: audited-events
-      name: audited-events
-      group: ${AUDITIED_EVENTS_GROUP:audited-events-1}
-      consumers: ${AUDITIED_EVENTS_CONSUMERS:3}
-      auto-startup: ${AUDITIED_EVENTS_AUTOSTARTUP:true}
+    audit-history:
+      id: audit-history
+      name: audit-history
+      group: ${AUDIT_HISTORY_GROUP:audit-history-1}
+      consumers: ${AUDIT_HISTORY_CONSUMERS:3}
+      auto-startup: ${AUDIT_HISTORY_AUTOSTARTUP:true}

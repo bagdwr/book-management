@@ -52,3 +52,12 @@ All volumes are stored in local
    [http://localhost:8000/swagger-ui/index.html](http://localhost:8000/swagger-ui/index.html)
 
 ---
+
+8. **System structure**:
+
+There are authors and book models.
+Also, there is a `Library member` model who can loan books from the library.
+All records of books loan stores in book_loan table.
+And there are some system tables for liquibase that are not necessary for a book management model.
+
+![db.png](/db.png)

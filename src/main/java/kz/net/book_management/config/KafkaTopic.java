@@ -27,11 +27,11 @@ public class KafkaTopic {
     }
 
     @Bean
-    public NewTopic auditedEvents() {
+    public NewTopic auditHistoryTopic() {
         return TopicBuilder
-                .name(env.getProperty("kafka.producer.audited-events.name"))
-                .partitions(Integer.parseInt(env.getProperty("kafka.producer.audited-events.partitions")))
-                .replicas(Integer.parseInt(env.getProperty("kafka.producer.audited-events.replication-factor")))
+                .name(env.getProperty("kafka.producer.audit-history.name"))
+                .partitions(Integer.parseInt(env.getProperty("kafka.producer.audit-history.partitions")))
+                .replicas(Integer.parseInt(env.getProperty("kafka.producer.audit-history.replication-factor")))
                 .build();
     }
 

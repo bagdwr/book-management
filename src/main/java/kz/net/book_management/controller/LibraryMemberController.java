@@ -38,7 +38,7 @@ public class LibraryMemberController {
     }
 
     @DeleteMapping("/member")
-    public void deleteMember(@RequestBody String id) {
+    public void deleteMember(@RequestParam String id) {
 
         log.info("2f8syvg :: member deletion process id: {}", id);
 
