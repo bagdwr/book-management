@@ -19,4 +19,5 @@ public interface BookService {
 
     List<String> getGenres();
 
+    Book getBook(String id);
 }

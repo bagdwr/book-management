@@ -80,6 +80,8 @@ public class BookServiceImpl implements BookService {
                     bookDto.title = book.getTitle();
                     bookDto.totalCopies = book.getTotalCopies();
                     bookDto.releaseYear = book.getReleaseYear();
+                    bookDto.author = book.getAuthor().getFullName();
+
                     return bookDto;
                 }))
                 .toList();
@@ -126,5 +128,15 @@ public class BookServiceImpl implements BookService {
         return Arrays.stream(GenreEnum.values())
                 .map(GenreEnum::get)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Book getBook(String id) {
+
+        log.info("GlcLjgDCW :: getBook id: {}", id);
+
+        return bookRepository.findById(UUID.fromString(id))
+                .orElse(null);
+
     }
 }

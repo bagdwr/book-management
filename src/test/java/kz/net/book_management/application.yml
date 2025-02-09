@@ -1,0 +1,37 @@
+server:
+  port: 8000
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
+logging:
+  level:
+    kz:
+      net:
+        book_management: debug
+
+spring:
+  main:
+    allow-circular-references: true
+
+  application:
+    name: book-management
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: ${DB_SHOW_SQL:true}
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:db}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    change-log: classpath:liquibase/main-changelog-log.xml
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:db}
+    user: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    enabled: ${DB_LIQUIBASE_ENABLED:false}

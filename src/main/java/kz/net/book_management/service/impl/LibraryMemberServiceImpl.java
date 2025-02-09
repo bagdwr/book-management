@@ -1,9 +1,14 @@
 package kz.net.book_management.service.impl;
 
+import kz.net.book_management.model.dto.LoanDto;
+import kz.net.book_management.model.dto.LoanStatusDto;
 import kz.net.book_management.model.dto.MemberDto;
+import kz.net.book_management.model.entity.Book;
+import kz.net.book_management.model.entity.BookLoan;
 import kz.net.book_management.model.entity.LibraryMember;
-import kz.net.book_management.repository.BookLoanRepository;
 import kz.net.book_management.repository.LibraryMemberRepository;
+import kz.net.book_management.service.BookLoanService;
+import kz.net.book_management.service.BookService;
 import kz.net.book_management.service.LibraryMemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +26,10 @@ public class LibraryMemberServiceImpl implements LibraryMemberService {
     private LibraryMemberRepository libraryMemberRepository;
 
     @Autowired
-    private BookLoanRepository bookLoanRepository;
+    private BookLoanService bookLoanService;
+
+    @Autowired
+    private BookService bookService;
 
     @Override
     public List<MemberDto> getAll() {
@@ -46,11 +54,43 @@ public class LibraryMemberServiceImpl implements LibraryMemberService {
 
     @Override
     public LibraryMember save(MemberDto member) {
-        return null;
+
+        LibraryMember libraryMember = new LibraryMember();
+
+        if (member.id != null) {
+
+            libraryMember = libraryMemberRepository.findById(UUID.fromString(member.id))
+                    .orElseThrow(() -> new RuntimeException("RnxLs9Ir :: libraryMember with id " + member.id + " not found"));
+
+            log.info("y5ZnBvucYV :: will create new book");
+
+        } else {
+            libraryMember.setEmail(member.email);
+        }
+
+        libraryMember.setAddress(member.address);
+        libraryMember.setPhoneNumber(member.phoneNumber);
+        libraryMember.setFullName(member.fullName);
+
+        log.info("6oXLYLu :: going to save libraryMember : {}", libraryMember);
+
+        return libraryMemberRepository.save(libraryMember);
+
     }
 
     @Override
     public void deleteMember(String id) {
+
+        Optional<LibraryMember> authorOpt = libraryMemberRepository.findById(UUID.fromString(id));
+
+        LibraryMember libraryMember = authorOpt.orElseThrow(
+                () -> new RuntimeException("qJQtZ94aVM3 :: member with id " + id + " not found"));
+
+        log.info("YpWZvGM1F :: member: {} will be deleted", libraryMember);
+
+        libraryMemberRepository.delete(libraryMember);
+
+        log.info("U2LBJjPJH :: member with id {} was deleted", id);
 
     }
 
@@ -59,8 +99,43 @@ public class LibraryMemberServiceImpl implements LibraryMemberService {
 
         log.debug("EvwiKqJTk :: getMember id: {}", id);
 
-        Optional<LibraryMember> libraryMember = libraryMemberRepository.findById(UUID.fromString(id));
+        return libraryMemberRepository.findById(UUID.fromString(id))
+                .orElse(null);
 
-        return libraryMember.orElse(null);
     }
+
+    @Override
+    public List<LoanDto> getAllLoans() {
+
+        return bookLoanService.getAllLoans();
+
+    }
+
+    @Override
+    public BookLoan loanBook(LoanStatusDto loan) {
+
+        String bookId = loan.bookId;
+
+        Book book = bookService.getBook(bookId);
+
+        if (book == null) throw new RuntimeException("qQPac9lR :: book with id: " + bookId + " not found");
+
+        LibraryMember member = getMember(loan.memberId);
+
+        if (member == null) throw new RuntimeException("DYsy9gVi :: member with id: " + loan.memberId + " not found");
+
+        return bookLoanService.createBookLoanRecord(book, member);
+
+    }
+
+    @Override
+    public BookLoan setLoanReturn(LoanStatusDto loan) {
+
+        log.trace("wb9cKKhpfaL :: setLoanReturn");
+
+        return bookLoanService.setReturnDate(loan.loanId, loan.loanReturnDate);
+
+    }
+
+
 }

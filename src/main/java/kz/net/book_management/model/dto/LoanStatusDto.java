@@ -4,14 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.Instant;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BookDto {
-    public String id;
-    public String title;
-    public String releaseYear;
-    public Integer totalCopies;
-    public String genre;
-    public String author;
+public class LoanStatusDto {
+    public String loanId;
+    public String memberId;
+    public String bookId;
+    public Instant loanReturnDate;
 }

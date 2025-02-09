@@ -7,6 +7,7 @@ public enum GenreEnum {
     HORROR("Хоррор"),
     THRILLER("Триллер"),
     PHILOSOPHY("Философия"),
+    LITERATURE("Литература"),
     RELIGION("Религия"),
     SCIENCE("Наука"),
     BUSINESS("Бизнес"),

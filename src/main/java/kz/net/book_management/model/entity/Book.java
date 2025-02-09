@@ -1,10 +1,7 @@
 package kz.net.book_management.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
@@ -14,6 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 @EqualsAndHashCode(callSuper = true)
 public class Book extends BaseEntity {
 

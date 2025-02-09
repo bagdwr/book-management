@@ -1,7 +1,10 @@
 package kz.net.book_management.controller;
 
 import jakarta.validation.Valid;
+import kz.net.book_management.model.dto.LoanStatusDto;
+import kz.net.book_management.model.dto.LoanDto;
 import kz.net.book_management.model.dto.MemberDto;
+import kz.net.book_management.model.entity.BookLoan;
 import kz.net.book_management.model.entity.LibraryMember;
 import kz.net.book_management.service.LibraryMemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -51,5 +54,32 @@ public class LibraryMemberController {
         return libraryMemberService.save(member);
 
     }
+
+    @GetMapping("/all-loans")
+    public List<LoanDto> getAllLoans() {
+
+        log.info("Yc8NIkIypny :: getAllLoans");
+
+        return libraryMemberService.getAllLoans();
+
+    }
+
+    @PostMapping("/loan-book")
+    public BookLoan createLoanBook(@RequestBody @Valid LoanStatusDto loan) {
+
+        log.info("x7o7ci6 :: book loan creation process: {}", loan);
+
+        return libraryMemberService.loanBook(loan);
+    }
+
+    @PostMapping("/set-return")
+    public BookLoan setLoanReturn(@RequestBody @Valid LoanStatusDto loan) {
+
+        log.info("qWY6CClol :: book loan set return date: {}", loan);
+
+        return libraryMemberService.setLoanReturn(loan);
+
+    }
+
 
 }
