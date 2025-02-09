@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: book-management
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: ${DB_SHOW_SQL:true}
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:db}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    change-log: classpath:liquibase/main-changelog-log.xml
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:db}
+    user: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    enabled: ${DB_LIQUIBASE_ENABLED:true}
+
+kafka:
+  bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+  producer:
+    audited-events:
+      name: audited-events
+      partitions: ${AUDITED_EVENTS_PARTITIONS:48}
+      replication-factor: ${REPLICATION_FACTOR:1}
+  consumer:
+    enable-auto-commit: true
+    client-data:
+      id: audited-events
+      name: audited-events
+      group: audited-events-1
+      consumers: 3

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+    <changeSet author="bagdwr" id="insert-default-tables">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+
+        CREATE TABLE author (
+            id UUID PRIMARY KEY,
+            full_name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) UNIQUE NOT NULL,
+            birth_date DATE,
+            created_at TIMESTAMP WITH TIME ZONE,
+            created_by VARCHAR(255),
+            updated_at TIMESTAMP WITH TIME ZONE,
+            updated_by VARCHAR(255)
+        );
+
+        CREATE TABLE book (
+            id UUID PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            release_year VARCHAR(10),
+            total_copies INT,
+            genre VARCHAR(100),
+            author_id UUID REFERENCES author(id) ON DELETE SET NULL,
+            created_at TIMESTAMP WITH TIME ZONE,
+            created_by VARCHAR(255),
+            updated_at TIMESTAMP WITH TIME ZONE,
+            updated_by VARCHAR(255)
+        );
+
+        CREATE TABLE library_member (
+            id UUID PRIMARY KEY,
+            full_name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) UNIQUE NOT NULL,
+            phone_number VARCHAR(20) NOT NULL,
+            address TEXT,
+            created_at TIMESTAMP WITH TIME ZONE,
+            created_by VARCHAR(255),
+            updated_at TIMESTAMP WITH TIME ZONE,
+            updated_by VARCHAR(255)
+        );
+
+        CREATE TABLE book_loan (
+            id UUID PRIMARY KEY,
+            book_id UUID REFERENCES book(id) ON DELETE CASCADE,
+            member_id UUID REFERENCES library_member(id) ON DELETE CASCADE,
+            loan_date TIMESTAMP WITH TIME ZONE,
+            return_date TIMESTAMP WITH TIME ZONE,
+            created_at TIMESTAMP WITH TIME ZONE,
+            created_by VARCHAR(255),
+            updated_at TIMESTAMP WITH TIME ZONE,
+            updated_by VARCHAR(255)
+        );
+
+    ]]></sql>
+    </changeSet>
+
+</databaseChangeLog>
