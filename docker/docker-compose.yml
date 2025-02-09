@@ -48,8 +48,11 @@ services:
     ports:
       - "9092:9092"
       - "29092:29092"
-    links:
-      - zookeeper
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1000m
     volumes:
       - kafka_vol:/var/lib/kafka/data
 

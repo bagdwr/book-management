@@ -1,4 +1,4 @@
-package kz.net.book_management.entity;
+package kz.net.book_management.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,33 +7,31 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @EqualsAndHashCode(callSuper = true)
-public class Book extends BaseEntity {
+public class BookLoan extends BaseEntity {
 
     @Id
     @UuidGenerator
     private UUID id;
 
-    @Column(nullable = false)
-    private String title;
-
-    @Column
-    private String releaseYear;
-
-    @Column
-    private int totalCopies;
-
-    @Column
-    private String genre;
+    @ManyToOne
+    private Book book;
 
     @ManyToOne
-    private Author author;
+    private LibraryMember member;
+
+    @Column
+    private Instant loanDate;
+
+    @Column
+    private Instant returnDate;
 
 }

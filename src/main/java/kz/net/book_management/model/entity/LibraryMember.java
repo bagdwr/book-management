@@ -1,4 +1,4 @@
-package kz.net.book_management.entity;
+package kz.net.book_management.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -17,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Author extends BaseEntity {
+public class LibraryMember extends BaseEntity {
 
     @Id
     @UuidGenerator
@@ -29,7 +28,10 @@ public class Author extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private String phoneNumber;
+
     @Column
-    private Date birthDate;
+    private String address;
 
 }

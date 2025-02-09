@@ -1,7 +1,20 @@
 server:
-  port: 8080
+  port: 8000
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
+logging:
+  level:
+    kz:
+      net:
+        book_management: debug
 
 spring:
+  main:
+    allow-circular-references: true
+
   application:
     name: book-management
 
@@ -32,8 +45,9 @@ kafka:
       replication-factor: ${REPLICATION_FACTOR:1}
   consumer:
     enable-auto-commit: true
-    client-data:
+    audited-events:
       id: audited-events
       name: audited-events
-      group: audited-events-1
-      consumers: 3
+      group: ${AUDITIED_EVENTS_GROUP:audited-events-1}
+      consumers: ${AUDITIED_EVENTS_CONSUMERS:3}
+      auto-startup: ${AUDITIED_EVENTS_AUTOSTARTUP:true}

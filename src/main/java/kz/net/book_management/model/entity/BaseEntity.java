@@ -1,4 +1,4 @@
-package kz.net.book_management.entity;
+package kz.net.book_management.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

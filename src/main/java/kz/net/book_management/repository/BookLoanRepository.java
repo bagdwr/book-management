@@ -1,6 +1,6 @@
 package kz.net.book_management.repository;
 
-import kz.net.book_management.entity.BookLoan;
+import kz.net.book_management.model.entity.BookLoan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

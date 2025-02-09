@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
-    <changeSet author="bagdwr" id="insert-default-tables">
+    <changeSet author="bgdwr" id="insert-default-tables">
         <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
 
         CREATE TABLE author (
@@ -57,6 +57,72 @@
         );
 
     ]]></sql>
+    </changeSet>
+
+    <changeSet author="bgdwr" id="insert-preloaded-data">
+        <sql endDelimiter=";;" splitStatements="true"> <![CDATA[
+
+        INSERT INTO author (id, full_name, email, birth_date, created_at, created_by, updated_at, updated_by)
+        VALUES ('550e8400-e29b-41d4-a716-446655440000', 'Абылай Нұрланов', 'abilay.nurlanov@example.kz', '1975-03-21', NOW(),
+                'system', NOW(), 'system'),
+               ('550e8400-e29b-41d4-a716-446655440001', 'Әсел Муханова', 'asel.mukhanova@example.kz', '1988-07-11', NOW(),
+                'system', NOW(), 'system'),
+               ('550e8400-e29b-41d4-a716-446655440002', 'Ержан Сейітов', 'yerzhan.seitov@example.kz', '1992-09-15', NOW(),
+                'system', NOW(), 'system'),
+               ('550e8400-e29b-41d4-a716-446655440003', 'Дана Құнанбаева', 'dana.kunanbayeva@example.kz', '1981-02-03', NOW(),
+                'system', NOW(), 'system');
+
+        INSERT INTO book (id, title, release_year, total_copies, genre, author_id, created_at, created_by, updated_at,
+                  updated_by)
+        VALUES ('660e8400-e29b-41d4-a716-446655440002', 'Қазақтың Батырлары', '2005', 30, 'History',
+                '550e8400-e29b-41d4-a716-446655440000', NOW(), 'system', NOW(), 'system'),
+               ('660e8400-e29b-41d4-a716-446655440003', 'Табиғат және Адам', '2012', 25, 'Science',
+                '550e8400-e29b-41d4-a716-446655440001', NOW(), 'system', NOW(), 'system'),
+               ('660e8400-e29b-41d4-a716-446655440004', 'Абайдың Қара Сөздері', '1995', 40, 'Philosophy',
+                '550e8400-e29b-41d4-a716-446655440002', NOW(), 'system', NOW(), 'system'),
+               ('660e8400-e29b-41d4-a716-446655440005', 'Математиканың Қызықтары', '2019', 20, 'Education',
+                '550e8400-e29b-41d4-a716-446655440003', NOW(), 'system', NOW(), 'system'),
+               ('660e8400-e29b-41d4-a716-446655440006', 'Жұлдыздар Әлемі', '2017', 35, 'Science',
+                '550e8400-e29b-41d4-a716-446655440000', NOW(), 'system', NOW(), 'system'),
+               ('660e8400-e29b-41d4-a716-446655440007', 'Қазақ Поэзиясы', '2003', 50, 'Poetry',
+                '550e8400-e29b-41d4-a716-446655440001', NOW(), 'system', NOW(), 'system'),
+               ('660e8400-e29b-41d4-a716-446655440008', 'Тарихи Оқиғалар', '2010', 15, 'History',
+                '550e8400-e29b-41d4-a716-446655440002', NOW(), 'system', NOW(), 'system'),
+               ('660e8400-e29b-41d4-a716-446655440009', 'Бизнеске Қадам', '2021', 10, 'Business',
+                '550e8400-e29b-41d4-a716-446655440003', NOW(), 'system', NOW(), 'system'),
+               ('660e8400-e29b-41d4-a716-446655440010', 'Әдебиет Әлемі', '2006', 60, 'Literature',
+                '550e8400-e29b-41d4-a716-446655440000', NOW(), 'system', NOW(), 'system'),
+               ('660e8400-e29b-41d4-a716-446655440011', 'Аңыздар мен Ақиқат', '1999', 45, 'History',
+                '550e8400-e29b-41d4-a716-446655440001', NOW(), 'system', NOW(), 'system');
+
+
+        INSERT INTO library_member (id, full_name, email, phone_number, address, created_at, created_by, updated_at, updated_by)
+        VALUES ('770e8400-e29b-41d4-a716-446655440004', 'Бекзат Төлеген', 'bekzat.tolegen@example.kz', '+77711223344',
+                'Алматы, Абылайхан көшесі, 45', NOW(), 'system', NOW(), 'system'),
+               ('770e8400-e29b-41d4-a716-446655440005', 'Айгерім Мұратқызы', 'aigerim.muratkyzy@example.kz', '+77715556677',
+                'Астана, Қонаев көшесі, 12', NOW(), 'system', NOW(), 'system'),
+               ('770e8400-e29b-41d4-a716-446655440006', 'Нұрсұлтан Қайратов', 'nursultan.kai@example.kz', '+77719998877',
+                'Шымкент, Байтерек ықшам ауданы, 7', NOW(), 'system', NOW(), 'system'),
+               ('770e8400-e29b-41d4-a716-446655440007', 'Гүлжанат Серікбаева', 'gulzhanat.serik@example.kz', '+77713334455',
+                'Қарағанды, Назарбаев даңғылы, 33', NOW(), 'system', NOW(), 'system');
+
+
+        INSERT INTO book_loan (id, book_id, member_id, loan_date, return_date, created_at, created_by, updated_at, updated_by)
+        VALUES ('880e8400-e29b-41d4-a716-446655440006', '660e8400-e29b-41d4-a716-446655440002',
+                '770e8400-e29b-41d4-a716-446655440004', NOW(), NULL, NOW(), 'system', NOW(), 'system'),
+               ('880e8400-e29b-41d4-a716-446655440007', '660e8400-e29b-41d4-a716-446655440003',
+                '770e8400-e29b-41d4-a716-446655440005', NOW(), NULL, NOW(), 'system', NOW(), 'system'),
+               ('880e8400-e29b-41d4-a716-446655440008', '660e8400-e29b-41d4-a716-446655440004',
+                '770e8400-e29b-41d4-a716-446655440006', NOW() - INTERVAL '100days', NOW() - INTERVAL '14 days', NOW(), 'system',
+                NOW(), 'system'),
+               ('880e8400-e29b-41d4-a716-446655440009', '660e8400-e29b-41d4-a716-446655440005',
+                '770e8400-e29b-41d4-a716-446655440007', NOW(), NULL, NOW(), 'system', NOW(), 'system'),
+               ('880e8400-e29b-41d4-a716-446655440010', '660e8400-e29b-41d4-a716-446655440007',
+                '770e8400-e29b-41d4-a716-446655440004', NOW() - INTERVAL '30days', NOW() - INTERVAL '1 days', NOW(), 'system',
+                NOW(), 'system');
+            ]]>
+
+        </sql>
     </changeSet>
 
 </databaseChangeLog>

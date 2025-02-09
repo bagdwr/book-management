@@ -37,10 +37,13 @@ dependencies {
 	//utils
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
+
 
 	implementation 'org.springframework.kafka:spring-kafka'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
+	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.24.2'
 
 }
 
